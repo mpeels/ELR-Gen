@@ -1,0 +1,29 @@
+.elrGenerator {
+  padding: 0 1rem;
+
+  .pageContent {
+    display: flex;
+    gap: 3rem;
+    form {
+      outline: solid 1px black;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+      width: 300px;
+
+      .field {
+        display: flex;
+        justify-content: space-between;
+
+        & > select {
+          width: 150px;
+        }
+      }
+    }
+
+    .elrContent {
+      flex-grow: 1;
+    }
+  }
+}
