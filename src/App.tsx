@@ -21,7 +21,9 @@ type Patient = {
   city: string;
   zipcode: string;
   buildingNumber: string;
-  dob: string;
+  dayOfBirth: string;
+  monthOfBirth: string;
+  yearOfBirth: string;
   timestamp: string;
 };
 
@@ -38,7 +40,9 @@ const initial: Patient & { disease: SupportedDisease } = {
   city: "",
   zipcode: "30342",
   buildingNumber: "",
-  dob: "",
+  dayOfBirth: "",
+  monthOfBirth: "",
+  yearOfBirth: "",
   timestamp: "",
   disease: "hepbPrelim",
 };
@@ -71,8 +75,13 @@ export const App = () => {
       city: coalesce(value.city, faker.location.city()),
       zipcode: coalesce(value.zipcode, generateRandomNumbers(5)),
       buildingNumber: `unit ${faker.location.buildingNumber()}`,
-      dob: coalesce(
-        value.dob,
+      dayOfBirth: coalesce(value.dayOfBirth, `${faker.number.int(30)}`),
+      monthOfBirth: coalesce(
+        value.monthOfBirth,
+        `${faker.number.int({ min: 1, max: 12 })}`
+      ),
+      yearOfBirth: coalesce(
+        value.yearOfBirth,
         `19${faker.number.int(9)}${faker.number.int(9)}`
       ),
       timestamp: generateTimestamp(),
@@ -83,7 +92,9 @@ export const App = () => {
       .replace(/PATIENTLASTNAME/g, patientData.lastName)
       .replace(/PATIENTMIDDLENAME/g, patientData.middleName)
       .replace(/PATIENTSSN/g, patientData.ssn)
-      .replace(/PATIENTDOB/g, patientData.dob)
+      .replace(/PATIENTDAYOFBIRTH/g, patientData.dayOfBirth)
+      .replace(/PATIENTMONTHOFBIRTH/g, patientData.monthOfBirth)
+      .replace(/PATIENTYEAROFBIRTH/g, patientData.yearOfBirth)
       .replace(/PATIENTGENDER/g, patientData.sex)
       .replace(/PATIENTCITY/g, patientData.city)
       .replace(/PATIENTEMAIL/g, patientData.email)
@@ -127,13 +138,52 @@ export const App = () => {
             />
           </div>
           <div className={styles.field}>
+            <label htmlFor="dayOfBirth">Day of birth</label>
+            <input
+              id="dayOfBirth"
+              pattern="\d{2}"
+              maxLength={2}
+              max={31}
+              onChange={(e) =>
+                setValue({
+                  ...value,
+                  dayOfBirth:
+                    e.target.value.length < 2
+                      ? `0${e.target.value}`
+                      : e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="mob">Month of birth</label>
+            <input
+              id="mob"
+              pattern="\d{2}"
+              maxLength={2}
+              max={12}
+              min={1}
+              onChange={(e) =>
+                setValue({
+                  ...value,
+                  monthOfBirth:
+                    e.target.value.length < 2
+                      ? `0${e.target.value}`
+                      : e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className={styles.field}>
             <label htmlFor="dob">Year of birth</label>
             <input
               id="dob"
               pattern="\d{4}"
               maxLength={4}
               max={2025}
-              onChange={(e) => setValue({ ...value, dob: e.target.value })}
+              onChange={(e) =>
+                setValue({ ...value, yearOfBirth: e.target.value })
+              }
             />
           </div>
           <div className={styles.field}>
